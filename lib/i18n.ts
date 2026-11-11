@@ -6,8 +6,8 @@ export const copy = {
     hero: {
       eyebrow: "For India's private hospitals",
       title: "You run a hospital. Not a TPA desk.",
-      sub: "Vardaan checks every cashless claim file before it reaches the insurer, drafts replies to queries, and shows you every rupee that gets deducted.",
-      cta: "Get a free deduction audit",
+      sub: "Vardaan handles the claim files. Your team handles patients.",
+      cta: "Join the waitlist",
       note: "Free for early hospitals. No software to install.",
     },
     live: [
@@ -18,14 +18,14 @@ export const copy = {
     ],
     liveLabel: "Example of the work Vardaan does",
     features: {
-      title: "A claims desk that never misses a page",
+      title: "Every claim file, handled",
       items: [
-        { h: "Checked before it's sent", p: "Every pre-auth and discharge file is matched against what each insurer and TPA asks for, so files go out complete the first time." },
-        { h: "Queries answered faster", p: "When an insurer raises a query, Vardaan drafts the reply with the right pages attached. Your team reviews and sends." },
-        { h: "Every rupee, accounted for", p: "Each settlement is matched to your bill. You see what was cut, why, and what can still be recovered." },
+        { h: "Complete before it's sent", p: "Every pre-auth and discharge file is checked against what that insurer and TPA ask for. Files go out right the first time." },
+        { h: "Queries answered in minutes", p: "A query comes in, a reply is drafted with the right pages attached. Your desk reviews and sends." },
+        { h: "Every rupee accounted for", p: "Each settlement is matched to your bill. See what was cut, why, and what you can still recover." },
       ],
     },
-    stat: { big: "3 months", h: "of your settlement letters, audited free", p: "Send us your last three months of settlement letters. We'll show you, in rupees, how much was deducted and which cuts were avoidable." },
+    stat: { big: "3 months", h: "of settlement letters, audited free", tag: "Free. No software. No commitment.", p: "Send us your last three months of settlement letters. We'll show you, in rupees, how much was deducted and which cuts were avoidable." },
     how: {
       title: "How it works",
       steps: [
@@ -46,7 +46,7 @@ export const copy = {
         { q: "Which insurers and TPAs do you cover?", a: "We start with the insurers and TPAs your hospital uses most, and add more as we grow." },
       ],
     },
-    closing: { h: "Breathe easier at every discharge.", p: "Join the waitlist and get a free deduction audit.", cta: "Join the waitlist" },
+    closing: { h: "Calmer discharges, starting this month.", p: "Join the waitlist. Early hospitals get a free deduction audit.", cta: "Join the waitlist" },
     footer: { privacy: "Privacy policy", terms: "Terms", made: "Made in India", company: "Product", contact: "Contact", legal: "Legal" },
   },
   hi: {
@@ -54,8 +54,8 @@ export const copy = {
     hero: {
       eyebrow: "भारत के प्राइवेट अस्पतालों के लिए",
       title: "आप अस्पताल चलाते हैं, TPA डेस्क नहीं।",
-      sub: "Vardaan हर कैशलेस क्लेम फ़ाइल को इंश्योरर तक पहुँचने से पहले जाँचता है, क्वेरी के जवाब तैयार करता है, और कटा हुआ हर रुपया आपको दिखाता है।",
-      cta: "मुफ़्त डिडक्शन ऑडिट लें",
+      sub: "क्लेम फ़ाइलें Vardaan संभालेगा। आपकी टीम मरीज़ों को।",
+      cta: "वेटलिस्ट जॉइन करें",
       note: "शुरुआती अस्पतालों के लिए मुफ़्त। कोई सॉफ़्टवेयर इंस्टॉल नहीं।",
     },
     live: [
@@ -66,14 +66,14 @@ export const copy = {
     ],
     liveLabel: "Vardaan के काम का उदाहरण",
     features: {
-      title: "ऐसी क्लेम डेस्क जो कोई पन्ना नहीं छोड़ती",
+      title: "हर क्लेम फ़ाइल, पूरी तरह संभाली हुई",
       items: [
         { h: "भेजने से पहले जाँच", p: "हर प्री-ऑथ और डिस्चार्ज फ़ाइल को इंश्योरर और TPA की ज़रूरत से मिलाया जाता है, ताकि फ़ाइल पहली बार में पूरी जाए।" },
         { h: "क्वेरी का जल्दी जवाब", p: "इंश्योरर क्वेरी भेजे तो Vardaan सही पन्नों के साथ जवाब तैयार करता है। आपकी टीम देखकर भेजती है।" },
         { h: "हर रुपये का हिसाब", p: "हर सेटलमेंट आपके बिल से मिलाया जाता है। क्या कटा, क्यों कटा, और क्या वापस मिल सकता है, सब दिखता है।" },
       ],
     },
-    stat: { big: "3 महीने", h: "के सेटलमेंट लेटर, मुफ़्त ऑडिट", p: "पिछले तीन महीने के सेटलमेंट लेटर भेजिए। हम रुपयों में दिखाएँगे कि कितना कटा और कौन-सी कटौती टाली जा सकती थी।" },
+    stat: { big: "3 महीने", h: "के सेटलमेंट लेटर, मुफ़्त ऑडिट", tag: "मुफ़्त। कोई सॉफ़्टवेयर नहीं। कोई बंधन नहीं।", p: "पिछले तीन महीने के सेटलमेंट लेटर भेजिए। हम रुपयों में दिखाएँगे कि कितना कटा और कौन-सी कटौती टाली जा सकती थी।" },
     how: {
       title: "कैसे काम करता है",
       steps: [
@@ -94,7 +94,7 @@ export const copy = {
         { q: "कौन-से इंश्योरर और TPA कवर होते हैं?", a: "हम आपके अस्पताल के सबसे ज़्यादा इस्तेमाल होने वाले इंश्योरर और TPA से शुरू करते हैं, और आगे बढ़ाते हैं।" },
       ],
     },
-    closing: { h: "हर डिस्चार्ज पर राहत की साँस।", p: "वेटलिस्ट से जुड़िए और मुफ़्त डिडक्शन ऑडिट पाइए।", cta: "वेटलिस्ट से जुड़ें" },
+    closing: { h: "हर डिस्चार्ज अब आसान, इसी महीने से।", p: "वेटलिस्ट जॉइन करें। शुरुआती अस्पतालों को मुफ़्त डिडक्शन ऑडिट।", cta: "वेटलिस्ट जॉइन करें" },
     footer: { privacy: "प्राइवेसी पॉलिसी", terms: "शर्तें", made: "भारत में बना", company: "प्रोडक्ट", contact: "संपर्क", legal: "कानूनी" },
   },
 } as const;

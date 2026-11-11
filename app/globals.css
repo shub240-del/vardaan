@@ -246,3 +246,33 @@ th { background: #f3f1ea; font-weight: 650; position: sticky; top: 0; }
 .tile.reveal:nth-child(4) { transition-delay: 0.25s; } .tile.reveal:nth-child(5) { transition-delay: 0.35s; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } .fm-video { display: none; } }
 .hero { margin-top: -68px; padding-top: 164px; }
+
+/* Polish pass */
+body { font-size: 17.5px; }
+h1 { font-weight: 700; letter-spacing: -0.035em; }
+h2 { font-weight: 650; letter-spacing: -0.028em; }
+.hero h1 { font-size: clamp(2.8rem, 7.6vw, 5.6rem); line-height: 1.02; max-width: 14ch; }
+.lede { font-size: clamp(1.15rem, 2vw, 1.4rem); color: #3a4a41; }
+.btn { transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease; }
+.btn.primary { box-shadow: 0 6px 18px rgba(31,122,85,0.22); }
+.btn.primary:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(31,122,85,0.28); }
+.btn.big { padding: 16px 28px; font-size: 1.05rem; }
+.btn span { transition: transform 0.2s ease; } .btn:hover span { transform: translateX(3px); }
+.features { padding: 112px 0 48px; }
+.features h2 { font-size: clamp(2rem, 4.4vw, 3.2rem); margin-bottom: 64px; }
+.feature-row { padding: 48px 0; gap: 72px; }
+.feature-copy h3 { font-size: clamp(1.7rem, 3.2vw, 2.3rem); letter-spacing: -0.025em; }
+.feature-media { border-radius: 28px; box-shadow: 0 30px 60px -30px rgba(23,35,29,0.25); }
+.mock-line, .live-item { border-radius: 14px; border-color: rgba(23,35,29,0.07); }
+.stat { padding: 104px 0; }
+.stat-grid { grid-template-rows: 200px 200px; gap: 18px; }
+.tile { border-radius: 24px; }
+.tile-media { position: relative; overflow: hidden; }
+.tile-media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.stat-tag { margin-top: 14px !important; font-weight: 650; color: var(--green-dark) !important; }
+.how { padding: 80px 0 104px; }
+.how h2, .faq h2 { font-size: clamp(2rem, 4.4vw, 3rem); }
+.faq { padding: 104px 0; }
+.closing { min-height: 520px; }
+.closing-inner h2 { font-size: clamp(2.2rem, 5.6vw, 4rem); line-height: 1.05; }
+@media (max-width: 960px) { .feature-row { gap: 28px; padding: 28px 0; } .features h2 { margin-bottom: 32px; } }

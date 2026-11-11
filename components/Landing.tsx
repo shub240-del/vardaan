@@ -31,7 +31,7 @@ const FEATURE_VIDEOS = [
 function Counter({ text }: { text: string }) {
   const m = text.match(/^(\d+)(.*)$/);
   const ref = useRef<HTMLSpanElement>(null);
-  const [n, setN] = useState(m ? 0 : null);
+  const [n, setN] = useState(m ? parseInt(m[1], 10) : null);
   useEffect(() => {
     if (!m || !ref.current) return;
     const target = parseInt(m[1], 10);
@@ -161,7 +161,7 @@ export default function Landing() {
               ))}
             </ul>
             <div className="hero-cta">
-              <a href="#join" className="btn primary">{t.hero.cta}</a>
+              <a href="#join" className="btn primary big">{t.hero.cta} <span aria-hidden="true">→</span></a>
               <span className="note">{t.hero.note}</span>
             </div>
           </div>
@@ -196,7 +196,12 @@ export default function Landing() {
 
         <section className="stat wrap">
           <div className="stat-grid">
-            <div className="tile tile-sky reveal" aria-hidden="true" />
+            <div className="tile tile-sky tile-media reveal" aria-hidden="true">
+              <video className="lazy-video" muted loop playsInline preload="none">
+                <source data-src="https://assets.mixkit.co/videos/46366/46366-720.mp4" type="video/mp4" />
+                <source data-src="https://assets.mixkit.co/videos/46366/46366-360.mp4" type="video/mp4" />
+              </video>
+            </div>
             <div className="tile tile-card reveal" aria-hidden="true">
               <small>Settlement · Star Health</small><strong>₹1,42,600</strong><span className="pill">Matched to bill</span>
             </div>
@@ -204,6 +209,7 @@ export default function Landing() {
               <p className="stat-big"><Counter text={t.stat.big} /></p>
               <h2>{t.stat.h}</h2>
               <p>{t.stat.p}</p>
+              <p className="stat-tag">{t.stat.tag}</p>
             </div>
             <div className="tile tile-card reveal" aria-hidden="true">
               <small>This week</small><strong>23 files checked</strong><span className="pill warn">4 gaps fixed before sending</span>
@@ -253,7 +259,7 @@ export default function Landing() {
           </video>
           <div className="wrap closing-inner reveal">
             <h2>{t.closing.h}</h2>
-            <a href="#join" className="btn primary">{t.closing.cta}</a>
+            <a href="#join" className="btn primary big">{t.closing.cta} <span aria-hidden="true">→</span></a>
           </div>
         </section>
       </main>
