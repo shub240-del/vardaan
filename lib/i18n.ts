@@ -47,7 +47,7 @@ export const copy = {
       ],
     },
     closing: { h: "Breathe easier at every discharge.", p: "Join the waitlist and get a free deduction audit.", cta: "Join the waitlist" },
-    footer: { privacy: "Privacy policy", terms: "Terms", made: "Made in India" },
+    footer: { privacy: "Privacy policy", terms: "Terms", made: "Made in India", company: "Product", contact: "Contact", legal: "Legal" },
   },
   hi: {
     nav: { how: "कैसे काम करता है", faq: "सवाल", cta: "मुफ़्त ऑडिट लें" },
@@ -95,7 +95,7 @@ export const copy = {
       ],
     },
     closing: { h: "हर डिस्चार्ज पर राहत की साँस।", p: "वेटलिस्ट से जुड़िए और मुफ़्त डिडक्शन ऑडिट पाइए।", cta: "वेटलिस्ट से जुड़ें" },
-    footer: { privacy: "प्राइवेसी पॉलिसी", terms: "शर्तें", made: "भारत में बना" },
+    footer: { privacy: "प्राइवेसी पॉलिसी", terms: "शर्तें", made: "भारत में बना", company: "प्रोडक्ट", contact: "संपर्क", legal: "कानूनी" },
   },
 } as const;
 

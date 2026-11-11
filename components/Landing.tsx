@@ -58,57 +58,71 @@ export default function Landing() {
 
       <main>
         <section className="hero">
-          <div className="sun" aria-hidden="true" />
-          <div className="hills" aria-hidden="true" />
-          <div className="wrap hero-grid">
-            <div className="hero-copy">
-              <p className="eyebrow">{t.hero.eyebrow}</p>
-              <h1>{t.hero.title}</h1>
-              <p className="lede">{t.hero.sub}</p>
-              <div className="hero-cta">
-                <a href="#join" className="btn primary">{t.hero.cta}</a>
-                <span className="note">{t.hero.note}</span>
-              </div>
-            </div>
-            <div className="live" aria-label={t.liveLabel}>
-              <p className="live-label">{t.liveLabel}</p>
-              <ul>
-                {t.live.map((l, i) => (
-                  <li key={i} className={`live-item s-${l.s}`} style={{ animationDelay: `${i * 0.35}s` }}>
-                    <span className="dot" aria-hidden="true">{icons[l.s as keyof typeof icons]}</span>
-                    <span><strong>{l.t}</strong><small>{l.d}</small></span>
-                  </li>
-                ))}
-              </ul>
+          <video className="hero-video" autoPlay muted loop playsInline poster="/hero.jpg" aria-hidden="true">
+            <source src="/hero.mp4" type="video/mp4" />
+          </video>
+          <div className="wrap hero-center">
+            <p className="eyebrow">{t.hero.eyebrow}</p>
+            <h1>{t.hero.title}</h1>
+            <p className="lede">{t.hero.sub}</p>
+            <ul className="feed" aria-label={t.liveLabel}>
+              {t.live.map((l, i) => (
+                <li key={i} className={`live-item s-${l.s}`} style={{ animationDelay: `${0.4 + i * 0.5}s` }}>
+                  <span className="dot" aria-hidden="true">{icons[l.s as keyof typeof icons]}</span>
+                  <span><strong>{l.t}</strong><small>{l.d}</small></span>
+                </li>
+              ))}
+            </ul>
+            <div className="hero-cta">
+              <a href="#join" className="btn primary">{t.hero.cta}</a>
+              <span className="note">{t.hero.note}</span>
             </div>
           </div>
         </section>
 
         <section className="features wrap">
-          <h2>{t.features.title}</h2>
-          <div className="feature-grid">
-            {t.features.items.map((it, i) => (
-              <article key={i} className="feature">
+          <h2 className="center">{t.features.title}</h2>
+          {t.features.items.map((it, i) => (
+            <article key={i} className={`feature-row${i % 2 ? " flip" : ""}`}>
+              <div className="feature-copy">
                 <span className="feature-num">0{i + 1}</span>
                 <h3>{it.h}</h3>
                 <p>{it.p}</p>
-              </article>
-            ))}
-          </div>
+              </div>
+              <div className={`feature-media m${i}`} aria-hidden="true">
+                <div className="mock">
+                  {t.live.slice(i, i + 2).map((l, j) => (
+                    <div key={j} className={`mock-line s-${l.s}`}>
+                      <span className="dot">{icons[l.s as keyof typeof icons]}</span>
+                      <span><strong>{l.t}</strong><small>{l.d}</small></span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
         </section>
 
-        <section className="stat">
-          <div className="wrap stat-inner">
-            <p className="stat-big">{t.stat.big}</p>
-            <div>
+        <section className="stat wrap">
+          <div className="stat-grid">
+            <div className="tile tile-sky" aria-hidden="true" />
+            <div className="tile tile-card" aria-hidden="true">
+              <small>Settlement · Star Health</small><strong>₹1,42,600</strong><span className="pill">Matched to bill</span>
+            </div>
+            <div className="stat-center">
+              <p className="stat-big">{t.stat.big}</p>
               <h2>{t.stat.h}</h2>
               <p>{t.stat.p}</p>
             </div>
+            <div className="tile tile-card" aria-hidden="true">
+              <small>This week</small><strong>23 files checked</strong><span className="pill warn">4 gaps fixed before sending</span>
+            </div>
+            <div className="tile tile-sun" aria-hidden="true" />
           </div>
         </section>
 
         <section id="how" className="how wrap">
-          <h2>{t.how.title}</h2>
+          <h2 className="center">{t.how.title}</h2>
           <ol className="steps">
             {t.how.steps.map((s, i) => (
               <li key={i}>
@@ -131,7 +145,7 @@ export default function Landing() {
         </section>
 
         <section id="faq" className="faq wrap">
-          <h2>{t.faq.title}</h2>
+          <h2 className="center">{t.faq.title}</h2>
           <div className="faq-list">
             {t.faq.items.map((f, i) => (
               <details key={i}>
@@ -143,6 +157,9 @@ export default function Landing() {
         </section>
 
         <section className="closing">
+          <video className="hero-video" autoPlay muted loop playsInline aria-hidden="true">
+            <source src="/closing.mp4" type="video/mp4" />
+          </video>
           <div className="wrap closing-inner">
             <h2>{t.closing.h}</h2>
             <a href="#join" className="btn primary">{t.closing.cta}</a>
@@ -151,13 +168,20 @@ export default function Landing() {
       </main>
 
       <footer className="footer">
-        <div className="wrap footer-inner">
-          <Logo />
-          <nav aria-label="Legal">
-            <a href="/privacy">{t.footer.privacy}</a>
-            <a href="/terms">{t.footer.terms}</a>
-          </nav>
-          <p>© {new Date().getFullYear()} Vardaan · {t.footer.made}</p>
+        <div className="wrap">
+          <div className="footer-top">
+            <div><Logo /><p>{t.hero.title}</p></div>
+            <a href="#join" className="btn primary small">{t.nav.cta}</a>
+          </div>
+          <div className="footer-cols">
+            <div><h4>{t.footer.company}</h4><a href="#how">{t.nav.how}</a><a href="#faq">{t.nav.faq}</a></div>
+            <div><h4>{t.footer.contact}</h4><a href="#join">{t.closing.cta}</a></div>
+            <div><h4>{t.footer.legal}</h4><a href="/privacy">{t.footer.privacy}</a><a href="/terms">{t.footer.terms}</a></div>
+          </div>
+          <div className="footer-bottom">
+            <span>© {new Date().getFullYear()} Vardaan. All rights reserved.</span>
+            <span>{t.footer.made}</span>
+          </div>
         </div>
       </footer>
     </div>
