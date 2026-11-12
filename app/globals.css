@@ -276,3 +276,9 @@ h2 { font-weight: 650; letter-spacing: -0.028em; }
 .closing { min-height: 520px; }
 .closing-inner h2 { font-size: clamp(2.2rem, 5.6vw, 4rem); line-height: 1.05; }
 @media (max-width: 960px) { .feature-row { gap: 28px; padding: 28px 0; } .features h2 { margin-bottom: 32px; } }
+
+/* Photos */
+.tile-photo { background-size: cover; background-position: center; background-color: #f3e3a6; }
+.closing-photo { position: absolute; inset: 0; background-size: cover; background-position: center 60%; background-color: #e9eecf; }
+.closing-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(247,245,238,0.55), rgba(220,235,245,0.35) 50%, rgba(247,245,238,0.6)); }
+.fm-video { opacity: 0.6; }

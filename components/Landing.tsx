@@ -22,6 +22,12 @@ const icons = {
   money: "₹",
 } as const;
 
+const FEATURE_POSTERS = [
+  "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=70",
+  "https://images.unsplash.com/photo-1777269749032-d8d458ae594d?auto=format&fit=crop&w=1200&q=70",
+  "https://images.unsplash.com/photo-1764727291644-5dcb0b1a0375?auto=format&fit=crop&w=1200&q=70",
+];
+
 const FEATURE_VIDEOS = [
   "https://assets.mixkit.co/videos/17469/17469-720.mp4",
   "https://assets.mixkit.co/videos/4779/4779-720.mp4",
@@ -177,7 +183,7 @@ export default function Landing() {
                 <p>{it.p}</p>
               </div>
               <div className={`feature-media m${i} reveal`} aria-hidden="true">
-                <video className="fm-video lazy-video" muted loop playsInline preload="none">
+                <video className="fm-video lazy-video" muted loop playsInline preload="none" poster={FEATURE_POSTERS[i]}>
                   <source data-src={FEATURE_VIDEOS[i]} type="video/mp4" />
                   <source data-src={FEATURE_VIDEOS[i].replace("-720.mp4", "-360.mp4")} type="video/mp4" />
                 </video>
@@ -214,7 +220,7 @@ export default function Landing() {
             <div className="tile tile-card reveal" aria-hidden="true">
               <small>This week</small><strong>23 files checked</strong><span className="pill warn">4 gaps fixed before sending</span>
             </div>
-            <div className="tile tile-sun reveal" aria-hidden="true" />
+            <div className="tile tile-photo reveal" aria-hidden="true" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1491977345698-16775008d007?auto=format&fit=crop&w=700&q=70)" }} />
           </div>
         </section>
 
@@ -254,9 +260,7 @@ export default function Landing() {
         </section>
 
         <section className="closing">
-          <video className="hero-video" autoPlay muted loop playsInline aria-hidden="true">
-            <source src="/closing.mp4" type="video/mp4" />
-          </video>
+          <div className="closing-photo" aria-hidden="true" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1626890759542-8fd859125b85?auto=format&fit=crop&w=1800&q=70)" }} />
           <div className="wrap closing-inner reveal">
             <h2>{t.closing.h}</h2>
             <a href="#join" className="btn primary big">{t.closing.cta} <span aria-hidden="true">→</span></a>
