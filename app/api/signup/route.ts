@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { signupSchema, isDisposableEmail } from "@/lib/validation";
-import { getSupabase, supabaseConfigured, TABLE } from "@/lib/supabase";
+import { insertSignup, overIpLimit, storeConfigured } from "@/lib/store";
 import { clientIp, hashIp, memoryRateLimited } from "@/lib/security";
 
 export const runtime = "nodejs";
@@ -49,51 +49,34 @@ export async function POST(req: Request) {
     return fail(422, "disposable_email", "Please use your work or regular email address.");
   }
 
-  if (!supabaseConfigured()) {
+  if (!storeConfigured()) {
     return fail(503, "not_configured", "Sign-ups are not open yet. Please try again soon.");
   }
 
-  const supabase = getSupabase();
   const ipHash = hashIp(ip);
-
-  // Durable rate limit across server instances.
-  const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-  const { count, error: countErr } = await supabase
-    .from(TABLE)
-    .select("id", { count: "exact", head: true })
-    .eq("ip_hash", ipHash)
-    .gte("created_at", since);
-  if (countErr) {
-    console.error("rate-limit count failed", countErr.message);
-    return fail(500, "server_error", "Something went wrong. Please try again.");
-  }
-  if ((count ?? 0) >= MAX_PER_IP_PER_HOUR) {
-    return fail(429, "rate_limited", "Too many sign-ups from your network. Please try again later.");
-  }
-
-  const { error } = await supabase.from(TABLE).insert({
-    full_name: d.fullName,
-    hospital_name: d.hospitalName,
-    role: d.role,
-    email: d.email,
-    phone: d.phone,
-    city: d.city,
-    state: d.state,
-    bed_capacity: d.bedCapacity,
-    monthly_claims: d.monthlyClaims,
-    language: d.language,
-    consent: true,
-    ip_hash: ipHash,
-    user_agent: (req.headers.get("user-agent") ?? "").slice(0, 300),
-  });
-
-  if (error) {
-    if (error.code === "23505") {
-      return NextResponse.json({ ok: true, status: "duplicate" });
+  try {
+    // Durable rate limit across server instances.
+    if (await overIpLimit(ipHash, MAX_PER_IP_PER_HOUR)) {
+      return fail(429, "rate_limited", "Too many sign-ups from your network. Please try again later.");
     }
-    console.error("insert failed", error.code, error.message);
+    const result = await insertSignup({
+      full_name: d.fullName,
+      hospital_name: d.hospitalName,
+      role: d.role,
+      email: d.email,
+      phone: d.phone,
+      city: d.city,
+      state: d.state,
+      bed_capacity: d.bedCapacity,
+      monthly_claims: d.monthlyClaims,
+      language: d.language,
+      consent: true,
+      ip_hash: ipHash,
+      user_agent: (req.headers.get("user-agent") ?? "").slice(0, 300),
+    });
+    return NextResponse.json({ ok: true, status: result });
+  } catch (e) {
+    console.error("signup store failed", e instanceof Error ? e.message : e);
     return fail(500, "server_error", "Something went wrong. Please try again.");
   }
-
-  return NextResponse.json({ ok: true, status: "created" });
 }

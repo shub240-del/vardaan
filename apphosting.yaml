@@ -1,0 +1,19 @@
+# Firebase App Hosting config (runs the full Next.js app, including /api routes and /admin).
+runConfig:
+  minInstances: 0
+  maxInstances: 2
+  region: asia-south1
+
+env:
+  - variable: FIREBASE_USE_ADC
+    value: "1"
+    availability: [RUNTIME]
+  - variable: NEXT_PUBLIC_SITE_URL
+    value: "https://vardaan-tech.web.app"
+    availability: [BUILD, RUNTIME]
+  - variable: ADMIN_PASSWORD
+    secret: vardaan-admin-password
+    availability: [RUNTIME]
+  - variable: ADMIN_SESSION_SECRET
+    secret: vardaan-admin-session-secret
+    availability: [RUNTIME]

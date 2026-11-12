@@ -36,7 +36,10 @@ export default function Privacy() {
         <p>We process this information on the basis of your consent, which you give by ticking the consent box. We do not sell your information or use it for third-party advertising.</p>
 
         <h2>Where it is stored and who sees it</h2>
-        <p>Sign-ups are stored in a secured database provided by Supabase and accessed only from our server. Only the Vardaan team can view them. Our website is hosted by Vercel. These providers process data on our behalf under their own security and privacy terms.</p>
+        <p>Sign-ups are stored in a secured database (Google Firebase Cloud Firestore, or Supabase) and accessed only from our server. Only the Vardaan team can view them. Our website is hosted by Vercel and/or Google Firebase. These providers process data on our behalf under their own security and privacy terms.</p>
+
+        <h2>Website analytics</h2>
+        <p>We use Google Analytics for Firebase to understand how visitors use this website, such as which pages are viewed and roughly where visits come from. It uses cookies and similar identifiers. It does not receive the details you type into the waitlist form. You can block these cookies in your browser settings.</p>
 
         <h2>How long we keep it</h2>
         <p>We keep waitlist details for up to 24 months, or until you ask us to delete them, whichever is sooner.</p>

@@ -1,51 +1,37 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/admin";
-import { getSupabase, supabaseConfigured, TABLE } from "@/lib/supabase";
+import { listSignups, storeConfigured, type SignupRow } from "@/lib/store";
 
 export const metadata: Metadata = { title: "Waitlist admin", robots: { index: false, follow: false } };
 export const dynamic = "force-dynamic";
 
-type Row = {
-  id: string; created_at: string; full_name: string; hospital_name: string; role: string;
-  email: string; phone: string; city: string; state: string; bed_capacity: string;
-  monthly_claims: string; language: string;
-};
+type Row = SignupRow;
 
 const PAGE = 50;
 
 export default async function AdminPage({ searchParams }: { searchParams: { q?: string; page?: string } }) {
   if (!isAdmin()) redirect("/admin/login");
 
-  if (!supabaseConfigured()) {
+  if (!storeConfigured()) {
     return (
       <main className="wrap admin">
         <h2>Waitlist</h2>
-        <p className="server-error">Supabase is not configured yet. Add SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel.</p>
+        <p className="server-error">No database is configured yet. Add FIREBASE_SERVICE_ACCOUNT (or the Supabase variables) to the server environment.</p>
       </main>
     );
   }
 
   const q = (searchParams.q ?? "").trim().slice(0, 80);
   const page = Math.max(1, Number(searchParams.page) || 1);
-  const supabase = getSupabase();
-
-  let query = supabase
-    .from(TABLE)
-    .select("id,created_at,full_name,hospital_name,role,email,phone,city,state,bed_capacity,monthly_claims,language", { count: "exact" })
-    .order("created_at", { ascending: false })
-    .range((page - 1) * PAGE, page * PAGE - 1);
-
-  if (q) {
-    const safe = q.replace(/[%,()]/g, " ");
-    query = query.or(
-      ["full_name", "hospital_name", "email", "phone", "city", "state"].map((c) => `${c}.ilike.%${safe}%`).join(",")
-    );
+  let rows: Row[] = [];
+  let total = 0;
+  let error: { message: string } | null = null;
+  try {
+    ({ rows, total } = await listSignups(q, page, PAGE));
+  } catch (e) {
+    error = { message: e instanceof Error ? e.message : "unknown error" };
   }
-
-  const { data, count, error } = await query;
-  const rows = (data ?? []) as Row[];
-  const total = count ?? 0;
   const pages = Math.max(1, Math.ceil(total / PAGE));
 
   return (

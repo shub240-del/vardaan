@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAdmin } from "@/lib/admin";
-import { getSupabase, TABLE } from "@/lib/supabase";
+import { allSignups } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,18 +19,11 @@ function csvCell(v: unknown): string {
 
 export async function GET() {
   if (!isAdmin()) return NextResponse.json({ ok: false }, { status: 401 });
-  const supabase = getSupabase();
-  const rows: Record<string, unknown>[] = [];
-  const page = 1000;
-  for (let from = 0; ; from += page) {
-    const { data, error } = await supabase
-      .from(TABLE)
-      .select(COLUMNS.join(","))
-      .order("created_at", { ascending: false })
-      .range(from, from + page - 1);
-    if (error) return NextResponse.json({ ok: false, message: error.message }, { status: 500 });
-    rows.push(...((data ?? []) as unknown as Record<string, unknown>[]));
-    if (!data || data.length < page) break;
+  let rows: Record<string, unknown>[];
+  try {
+    rows = (await allSignups()) as unknown as Record<string, unknown>[];
+  } catch (e) {
+    return NextResponse.json({ ok: false, message: e instanceof Error ? e.message : "export failed" }, { status: 500 });
   }
   const csv = [COLUMNS.join(","), ...rows.map((r) => COLUMNS.map((c) => csvCell(r[c])).join(","))].join("\n");
   const stamp = new Date().toISOString().slice(0, 10);

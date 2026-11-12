@@ -1,3 +1,4 @@
+import FirebaseAnalytics from "@/components/FirebaseAnalytics";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" />
       </head>
       <body>
+        <FirebaseAnalytics />
         {children}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </body>
