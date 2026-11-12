@@ -8,10 +8,20 @@ function Logo() {
   return (
     <a href="#top" className="logo" aria-label="Vardaan home">
       <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true">
-        <rect width="64" height="64" rx="16" fill="#1F7A55" />
-        <path d="M17 23l12 22 13.500-21" fill="none" stroke="#fff" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx="47" cy="16.500" r="5" fill="#F6D77B" />
-      </svg>
+  <g fill="#1F7A55">
+    <path d="M6 30 C14 28 26 33 32 46 C20 49 9 42 6 30 Z"/>
+    <path d="M58 30 C50 28 38 33 32 46 C44 49 55 42 58 30 Z"/>
+    <path d="M14 16 C24 18 32 30 32 46 C20 42 13 31 14 16 Z"/>
+    <path d="M50 16 C40 18 32 30 32 46 C44 42 51 31 50 16 Z"/>
+    <path d="M32 8 C42 18 44 34 32 46 C20 34 22 18 32 8 Z"/>
+    <path d="M14 51 C22 48.500 42 48.500 50 51 C44 55.500 20 55.500 14 51 Z"/>
+  </g>
+  <g fill="none" stroke="#F7F5EE" strokeWidth="1.6" strokeLinecap="round">
+    <path d="M32 46 C24 38 23 22 32 8"/>
+    <path d="M32 46 C40 38 41 22 32 8"/>
+  </g>
+  <circle cx="32" cy="24" r="3.4" fill="#F6D77B"/>
+</svg>
       <span>Vardaan</span>
     </a>
   );
@@ -282,7 +292,21 @@ export default function Landing() {
               <div><h4>{t.footer.legal}</h4><a href="/privacy">{t.footer.privacy}</a><a href="/terms">{t.footer.terms}</a></div>
             </div>
             <div className="footer-sign">
-              <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#1F7A55" /><path d="M17 23l12 22 13.500-21" fill="none" stroke="#fff" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" /><circle cx="47" cy="16.500" r="5" fill="#F6D77B" /></svg>
+              <svg width="44" height="44" viewBox="0 0 64 64" aria-hidden="true">
+  <g fill="#1F7A55">
+    <path d="M6 30 C14 28 26 33 32 46 C20 49 9 42 6 30 Z"/>
+    <path d="M58 30 C50 28 38 33 32 46 C44 49 55 42 58 30 Z"/>
+    <path d="M14 16 C24 18 32 30 32 46 C20 42 13 31 14 16 Z"/>
+    <path d="M50 16 C40 18 32 30 32 46 C44 42 51 31 50 16 Z"/>
+    <path d="M32 8 C42 18 44 34 32 46 C20 34 22 18 32 8 Z"/>
+    <path d="M14 51 C22 48.500 42 48.500 50 51 C44 55.500 20 55.500 14 51 Z"/>
+  </g>
+  <g fill="none" stroke="#F7F5EE" strokeWidth="1.6" strokeLinecap="round">
+    <path d="M32 46 C24 38 23 22 32 8"/>
+    <path d="M32 46 C40 38 41 22 32 8"/>
+  </g>
+  <circle cx="32" cy="24" r="3.4" fill="#F6D77B"/>
+</svg>
               <p>© {new Date().getFullYear()} Vardaan. All rights reserved.<br />{t.footer.made}.</p>
             </div>
           </div>
