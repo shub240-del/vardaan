@@ -7,9 +7,10 @@ import SignupForm from "./SignupForm";
 function Logo() {
   return (
     <a href="#top" className="logo" aria-label="Vardaan home">
-      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true">
-        <circle cx="16" cy="16" r="15" fill="#E8F3EC" />
-        <path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#1F7A55" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+      <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="16" fill="#1F7A55" />
+        <path d="M17 23l12 22 13.500-21" fill="none" stroke="#fff" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="47" cy="16.500" r="5" fill="#F6D77B" />
       </svg>
       <span>Vardaan</span>
     </a>
