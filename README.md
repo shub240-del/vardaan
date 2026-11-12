@@ -5,13 +5,10 @@ Static Next.js site on **Firebase Hosting** with sign-ups in **Cloud Firestore**
 ## How it works
 - `npm run build` exports a static site to `out/`.
 - The waitlist form writes straight to Firestore. `firestore.rules` is the security layer: anyone can add one valid sign-up, nobody can read/edit/delete sign-ups from a browser, and repeat emails/phones are rejected.
-- `/admin` uses Google sign-in. Only accounts with a doc at `admins/{uid}` can read sign-ups (search + CSV export).
 - Firebase Analytics is on (see privacy policy).
 
 ## One-time setup (Firebase console, project `vardaan-tech`)
 1. **Firestore Database → Create database** → Production mode → region `asia-south1`.
-2. **Authentication → Get started → Sign-in method → Google → Enable**.
-3. **Authentication → Settings → Authorized domains**: make sure `vardaan-tech.web.app` (and your custom domain later) are listed.
 
 ## Deploy
 ```bash
@@ -23,8 +20,8 @@ firebase deploy --only firestore:rules,hosting
 ```
 Live at https://vardaan-tech.web.app
 
-## Make yourself admin
-Open `/admin`, sign in with Google. The page shows your user ID. In the Firebase console → Firestore → start collection `admins` → document ID = that user ID → add any field (e.g. `name`) → save → reload `/admin`.
+## Viewing sign-ups
+Firebase console → Firestore Database → `waitlist_signups`. To export: Firestore → Import/Export, or copy from the data viewer.
 
 ## Auto-deploy on every push (optional)
 Run `firebase init hosting:github` once and pick `shub240-del/vardaan`. It adds the GitHub secret and workflow for you. Use build command `npm ci && npm run build`.

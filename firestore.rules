@@ -3,14 +3,9 @@ rules_version = '2';
 // The site is static, so browsers talk to Firestore directly. These rules are the only guard:
 //  - anyone may ADD one valid sign-up; nobody may read, edit or delete sign-ups from a browser
 //  - duplicate email/phone is blocked by "unique key" docs that can be created but never overwritten
-//  - only admins (a doc at /admins/{uid}, added by you in the Firebase console) can read sign-ups
+//  - sign-ups are viewed and exported only in the Firebase console (which ignores these rules)
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    function isAdmin() {
-      return request.auth != null
-        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
-    }
 
     function cleanText(v, min, max) {
       return v is string && v.size() >= min && v.size() <= max && !v.matches('.*[<>].*');
@@ -42,7 +37,7 @@ service cloud.firestore {
     }
 
     match /waitlist_signups/{id} {
-      allow read: if isAdmin();
+      allow read: if false; // view and export in the Firebase console
       allow create: if validSignup(request.resource.data)
         && getAfter(uniquePath('email_' + request.resource.data.email)).data.signup == id
         && getAfter(uniquePath('phone_' + request.resource.data.phone)).data.signup == id;
@@ -56,11 +51,6 @@ service cloud.firestore {
         && (key == 'email_' + getAfter(/databases/$(database)/documents/waitlist_signups/$(request.resource.data.signup)).data.email
             || key == 'phone_' + getAfter(/databases/$(database)/documents/waitlist_signups/$(request.resource.data.signup)).data.phone);
       allow read, update, delete: if false;
-    }
-
-    match /admins/{uid} {
-      allow read: if request.auth != null && request.auth.uid == uid;
-      allow write: if false;
     }
 
     match /{document=**} {

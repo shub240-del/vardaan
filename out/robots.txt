@@ -1,5 +1,4 @@
 User-Agent: *
 Allow: /
-Disallow: /admin
 
 Sitemap: https://vardaan-tech.web.app/sitemap.xml
