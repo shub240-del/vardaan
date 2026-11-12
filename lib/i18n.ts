@@ -5,7 +5,7 @@ export const copy = {
     nav: { how: "How it works", faq: "FAQ", cta: "Join waitlist" },
     hero: {
       eyebrow: "For private hospitals in India",
-      title: "Stop losing money on cashless claims.",
+      title: "Stop losing money", title2: "on cashless claims.", emailPh: "Your work email",
       sub: "Vardaan checks every claim file before the insurer does.",
       cta: "Join the waitlist",
       note: "Not live yet. Early hospitals get a free audit.",
@@ -53,7 +53,7 @@ export const copy = {
     nav: { how: "कैसे काम करता है", faq: "सवाल", cta: "वेटलिस्ट जॉइन करें" },
     hero: {
       eyebrow: "भारत के प्राइवेट अस्पतालों के लिए",
-      title: "कैशलेस क्लेम में पैसा गँवाना बंद करें।",
+      title: "कैशलेस क्लेम में", title2: "पैसा गँवाना बंद करें।", emailPh: "आपका ईमेल",
       sub: "इंश्योरर से पहले Vardaan हर क्लेम फ़ाइल जाँचता है।",
       cta: "वेटलिस्ट जॉइन करें",
       note: "अभी लाइव नहीं। शुरुआती अस्पतालों को मुफ़्त ऑडिट।",

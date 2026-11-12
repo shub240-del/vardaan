@@ -64,6 +64,19 @@ export default function Landing() {
   const heroCopy = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const [scrolled, setScrolled] = useState(false);
+  const [tick, setTick] = useState(0);
+  const [heroEmail, setHeroEmail] = useState("");
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setInterval(() => setTick((n) => n + 1), 2800);
+    return () => clearInterval(id);
+  }, []);
+  const onHeroEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    window.dispatchEvent(new CustomEvent("vd:prefill", { detail: heroEmail.trim() }));
+    document.getElementById("join")?.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => document.querySelector<HTMLInputElement>("#join input")?.focus({ preventScroll: true }), 700);
+  };
   const [lang, setLang] = useState<Lang>("en");
   const t = copy[lang];
 
@@ -129,18 +142,11 @@ export default function Landing() {
     <div id="top" className={lang === "hi" ? "hi" : ""}>
       <div className="progress" style={{ transform: `scaleX(${progress})` }} aria-hidden="true" />
       <header className={`nav${scrolled ? " scrolled" : ""}`}>
-        <div className="wrap nav-inner">
-          <Logo />
-          <nav className="nav-links" aria-label="Main">
-            <a href="#how">{t.nav.how}</a>
-            <a href="#faq">{t.nav.faq}</a>
-          </nav>
-          <div className="nav-actions">
-            <div className="lang" role="group" aria-label="Language">
-              <button className={lang === "en" ? "on" : ""} onClick={() => setLang("en")} aria-pressed={lang === "en"}>EN</button>
-              <button className={lang === "hi" ? "on" : ""} onClick={() => setLang("hi")} aria-pressed={lang === "hi"}>हिं</button>
-            </div>
-            <a href="#join" className="btn small primary">{t.nav.cta}</a>
+        <div className="nav-inner">
+          <div className="pill-group"><Logo /><a href="#how" className="pill">{t.nav.how}</a><a href="#faq" className="pill">{t.nav.faq}</a></div>
+          <div className="pill-group">
+            <button className="pill lang-pill" onClick={() => setLang(lang === "en" ? "hi" : "en")} aria-label="Switch language">{lang === "en" ? "हिं" : "EN"}</button>
+            <a href="#join" className="pill pill-cta">{t.nav.cta}</a>
           </div>
         </div>
       </header>
@@ -156,22 +162,20 @@ export default function Landing() {
             <div className="hero-veil" />
           </div>
           <div className="wrap hero-center" ref={heroCopy}>
-            <p className="eyebrow">{t.hero.eyebrow}</p>
-            <h1>{t.hero.title}</h1>
+            <h1>{t.hero.title}<br /><em>{t.hero.title2}</em></h1>
             <p className="lede">{t.hero.sub}</p>
-            <ul className="feed" aria-label={t.liveLabel}>
-              {t.live.map((l, i) => (
-                <li key={i} className={`live-item s-${l.s}`} style={{ animationDelay: `${0.4 + i * 0.5}s` }}>
-                  <span className="dot" aria-hidden="true">{icons[l.s as keyof typeof icons]}</span>
-                  <span><strong>{l.t}</strong><small>{l.d}</small></span>
-                </li>
-              ))}
-            </ul>
-            <div className="hero-cta">
-              <a href="#join" className="btn primary big">{t.hero.cta} <span aria-hidden="true">→</span></a>
-              <span className="note">{t.hero.note}</span>
-            </div>
+            <p className="ticker" aria-live="polite" aria-label={t.liveLabel}>
+              <span key={tick} className="ticker-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l2 2 3-4M3 14l2 2 3-4M11 7h10M11 15h10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <span>{t.live[tick % t.live.length].t}<span className="tk-d"> · {t.live[tick % t.live.length].d}</span></span>
+              </span>
+            </p>
           </div>
+          <form className="email-bar" onSubmit={onHeroEmail}>
+            <label className="sr-only" htmlFor="hero-email">{t.hero.emailPh}</label>
+            <input id="hero-email" type="email" placeholder={t.hero.emailPh} value={heroEmail} onChange={(e) => setHeroEmail(e.target.value)} maxLength={254} autoComplete="email" />
+            <button type="submit">{t.hero.cta}</button>
+          </form>
         </section>
 
         <section className="features wrap">
@@ -270,21 +274,20 @@ export default function Landing() {
       </main>
 
       <footer className="footer">
-        <div className="wrap">
-          <div className="footer-top">
-            <div><Logo /><p>{t.hero.title}</p></div>
-            <a href="#join" className="btn primary small">{t.nav.cta}</a>
-          </div>
-          <div className="footer-cols">
-            <div><h4>{t.footer.company}</h4><a href="#how">{t.nav.how}</a><a href="#faq">{t.nav.faq}</a></div>
-            <div><h4>{t.footer.contact}</h4><a href="#join">{t.closing.cta}</a></div>
-            <div><h4>{t.footer.legal}</h4><a href="/privacy">{t.footer.privacy}</a><a href="/terms">{t.footer.terms}</a></div>
-          </div>
-          <div className="footer-bottom">
-            <span>© {new Date().getFullYear()} Vardaan. All rights reserved.</span>
-            <span>{t.footer.made}</span>
+        <div className="footer-card">
+          <div className="wrap">
+            <div className="footer-cols">
+              <div><h4>{t.footer.company}</h4><a href="#how">{t.nav.how}</a><a href="#faq">{t.nav.faq}</a></div>
+              <div><h4>{t.footer.contact}</h4><a href="#join">{t.closing.cta}</a></div>
+              <div><h4>{t.footer.legal}</h4><a href="/privacy">{t.footer.privacy}</a><a href="/terms">{t.footer.terms}</a></div>
+            </div>
+            <div className="footer-sign">
+              <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#1F7A55" /><path d="M17 23l12 22 13.500-21" fill="none" stroke="#fff" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" /><circle cx="47" cy="16.500" r="5" fill="#F6D77B" /></svg>
+              <p>© {new Date().getFullYear()} Vardaan. All rights reserved.<br />{t.footer.made}.</p>
+            </div>
           </div>
         </div>
+        <div className="footer-giant" aria-hidden="true">Vardaan</div>
       </footer>
     </div>
   );

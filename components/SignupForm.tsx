@@ -23,6 +23,14 @@ type Status = "idle" | "submitting" | "created" | "duplicate";
 export default function SignupForm({ lang }: { lang: Lang }) {
   const t = formCopy[lang];
   const [f, setF] = useState<Fields>(EMPTY);
+  useEffect(() => {
+    const onPrefill = (e: Event) => {
+      const email = (e as CustomEvent<string>).detail;
+      if (typeof email === "string") setF((prev) => ({ ...prev, email: email.slice(0, 254) }));
+    };
+    window.addEventListener("vd:prefill", onPrefill);
+    return () => window.removeEventListener("vd:prefill", onPrefill);
+  }, []);
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({});
   const [status, setStatus] = useState<Status>("idle");
   const [serverError, setServerError] = useState("");
