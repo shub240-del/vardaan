@@ -16,7 +16,7 @@ function Logo() {
     <path d="M32 8 C42 18 44 34 32 46 C20 34 22 18 32 8 Z"/>
     <path d="M14 51 C22 48.500 42 48.500 50 51 C44 55.500 20 55.500 14 51 Z"/>
   </g>
-  <g fill="none" stroke="#F7F5EE" strokeWidth="1.6" strokeLinecap="round">
+  <g fill="none" stroke="#FFFFFF" strokeWidth="1.6" strokeLinecap="round">
     <path d="M32 46 C24 38 23 22 32 8"/>
     <path d="M32 46 C40 38 41 22 32 8"/>
   </g>
@@ -301,7 +301,7 @@ export default function Landing() {
     <path d="M32 8 C42 18 44 34 32 46 C20 34 22 18 32 8 Z"/>
     <path d="M14 51 C22 48.500 42 48.500 50 51 C44 55.500 20 55.500 14 51 Z"/>
   </g>
-  <g fill="none" stroke="#F7F5EE" strokeWidth="1.6" strokeLinecap="round">
+  <g fill="none" stroke="#FFFFFF" strokeWidth="1.6" strokeLinecap="round">
     <path d="M32 46 C24 38 23 22 32 8"/>
     <path d="M32 46 C40 38 41 22 32 8"/>
   </g>
