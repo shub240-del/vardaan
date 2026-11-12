@@ -1,33 +1,34 @@
 # Vardaan waitlist
 
-Next.js 14 site with a secure server-side signup API (Supabase Postgres), a private admin dashboard, and English/Hindi copy.
+Static Next.js site on **Firebase Hosting** with sign-ups in **Cloud Firestore**. Runs on Firebase's free Spark plan (no card).
 
-Vercel project: `vardaan-waitlist` (team shub240-del's projects), functions in Mumbai (`bom1`).
+## How it works
+- `npm run build` exports a static site to `out/`.
+- The waitlist form writes straight to Firestore. `firestore.rules` is the security layer: anyone can add one valid sign-up, nobody can read/edit/delete sign-ups from a browser, and repeat emails/phones are rejected.
+- `/admin` uses Google sign-in. Only accounts with a doc at `admins/{uid}` can read sign-ups (search + CSV export).
+- Firebase Analytics is on (see privacy policy).
 
-## Finish setup (in this order)
+## One-time setup (Firebase console, project `vardaan-tech`)
+1. **Firestore Database → Create database** → Production mode → region `asia-south1`.
+2. **Authentication → Get started → Sign-in method → Google → Enable**.
+3. **Authentication → Settings → Authorized domains**: make sure `vardaan-tech.web.app` (and your custom domain later) are listed.
 
-1. **Supabase:** create a project (Mumbai region if offered). Open SQL Editor, paste `supabase/schema.sql`, and run it.
-2. **Vercel env vars** (Project → Settings → Environment Variables → Production + Preview):
-   - `SUPABASE_URL`: from Supabase → Project Settings → API
-   - `SUPABASE_SERVICE_ROLE_KEY`: same page. Mark it **Sensitive**. Never prefix it with `NEXT_PUBLIC_`.
-   - `ADMIN_PASSWORD`: at least 10 characters
-   - `ADMIN_SESSION_SECRET`: at least 32 random characters (`openssl rand -hex 32`)
-   - `NEXT_PUBLIC_SITE_URL`: `https://yourdomain`
-3. **Privacy policy:** replace the three `[...]` placeholders in `app/privacy/page.tsx`.
-4. **Domain:** Vercel → Project → Settings → Domains → add your domain, then add the DNS records Vercel shows at your registrar.
-5. **Redeploy** so the env vars take effect.
-6. **Verify:** submit a real test signup on the custom domain, confirm the row in Supabase (Table Editor → `waitlist_signups`), then log in at `/admin` and export the CSV.
-
-## Security notes
-- The service-role key is only read in server code (`lib/supabase.ts`, marked `server-only`). The build was checked for leaks into client bundles.
-- Row-level security is on with no policies, so the anon and authenticated roles have no access.
-- Spam protection: honeypot field, minimum fill time, same-origin check, per-IP limits (in memory and in the database, 5 per hour), and a disposable-email block.
-- Duplicate protection: unique email and phone in the database, plus a client-side in-flight guard.
-- Admin: an HMAC-signed, httpOnly, SameSite=strict cookie with an 8-hour expiry, and login limited to 5 attempts per 15 minutes.
-
-## Local dev
-```
-cp .env.example .env.local   # fill in values
+## Deploy
+```bash
 npm install
-npm run dev
+npm i -g firebase-tools
+firebase login
+npm run build
+firebase deploy --only firestore:rules,hosting
 ```
+Live at https://vardaan-tech.web.app
+
+## Make yourself admin
+Open `/admin`, sign in with Google. The page shows your user ID. In the Firebase console → Firestore → start collection `admins` → document ID = that user ID → add any field (e.g. `name`) → save → reload `/admin`.
+
+## Auto-deploy on every push (optional)
+Run `firebase init hosting:github` once and pick `shub240-del/vardaan`. It adds the GitHub secret and workflow for you. Use build command `npm ci && npm run build`.
+
+## Known limits (static site, no server)
+- No per-IP rate limit. Spam protection is a honeypot field, a minimum fill time and strict rules. If spam shows up, turn on Firebase App Check (reCAPTCHA) — free.
+- Fill in the grievance officer placeholders in `app/privacy/page.tsx` before launch.

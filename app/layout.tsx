@@ -2,7 +2,7 @@ import FirebaseAnalytics from "@/components/FirebaseAnalytics";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const site = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
+const site = process.env.NEXT_PUBLIC_SITE_URL || "https://vardaan-tech.web.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site),

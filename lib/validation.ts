@@ -22,7 +22,7 @@ export const signupSchema = z.object({
   fullName: text(2, 120),
   hospitalName: text(2, 160),
   role: text(2, 80),
-  email: z.string().trim().toLowerCase().email().max(254),
+  email: z.string().trim().toLowerCase().email().max(254).refine((v) => !/[\s/]/.test(v), "Invalid email"),
   phone: z
     .string()
     .trim()

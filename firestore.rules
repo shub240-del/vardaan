@@ -1,8 +1,68 @@
 rules_version = '2';
-// Browsers get no direct access. The Next.js server writes and reads with the Admin SDK,
-// which bypasses these rules.
+
+// The site is static, so browsers talk to Firestore directly. These rules are the only guard:
+//  - anyone may ADD one valid sign-up; nobody may read, edit or delete sign-ups from a browser
+//  - duplicate email/phone is blocked by "unique key" docs that can be created but never overwritten
+//  - only admins (a doc at /admins/{uid}, added by you in the Firebase console) can read sign-ups
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function cleanText(v, min, max) {
+      return v is string && v.size() >= min && v.size() <= max && !v.matches('.*[<>].*');
+    }
+
+    function validSignup(d) {
+      return d.keys().hasOnly(['full_name', 'hospital_name', 'role', 'email', 'phone', 'city', 'state',
+                               'bed_capacity', 'monthly_claims', 'language', 'consent', 'user_agent', 'created_at'])
+        && d.keys().hasAll(['full_name', 'hospital_name', 'role', 'email', 'phone', 'city', 'state',
+                            'bed_capacity', 'monthly_claims', 'language', 'consent', 'user_agent', 'created_at'])
+        && cleanText(d.full_name, 2, 120)
+        && cleanText(d.hospital_name, 2, 160)
+        && cleanText(d.role, 2, 80)
+        && cleanText(d.city, 2, 80)
+        && cleanText(d.state, 2, 80)
+        && d.email is string && d.email.size() <= 254 && d.email == d.email.lower()
+        && d.email.matches('^[^@\\s/]+@[^@\\s/]+\\.[^@\\s/]{2,}$')
+        && d.phone is string && d.phone.matches('^\\+91[6-9][0-9]{9}$')
+        && d.bed_capacity in ['<10', '10-29', '30-49', '50-100', '100+']
+        && d.monthly_claims in ['<15', '15-40', '40-100', '100+', 'not_sure']
+        && d.language in ['en', 'hi']
+        && d.consent == true
+        && d.user_agent is string && d.user_agent.size() <= 300
+        && d.created_at == request.time;
+    }
+
+    function uniquePath(key) {
+      return /databases/$(database)/documents/waitlist_unique/$(key);
+    }
+
+    match /waitlist_signups/{id} {
+      allow read: if isAdmin();
+      allow create: if validSignup(request.resource.data)
+        && getAfter(uniquePath('email_' + request.resource.data.email)).data.signup == id
+        && getAfter(uniquePath('phone_' + request.resource.data.phone)).data.signup == id;
+      allow update, delete: if false;
+    }
+
+    match /waitlist_unique/{key} {
+      // create only (never update), and only together with the sign-up it points to
+      allow create: if request.resource.data.keys().hasOnly(['signup'])
+        && request.resource.data.signup is string
+        && (key == 'email_' + getAfter(/databases/$(database)/documents/waitlist_signups/$(request.resource.data.signup)).data.email
+            || key == 'phone_' + getAfter(/databases/$(database)/documents/waitlist_signups/$(request.resource.data.signup)).data.phone);
+      allow read, update, delete: if false;
+    }
+
+    match /admins/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

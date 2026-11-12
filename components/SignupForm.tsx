@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { signupSchema, isDisposableEmail } from "@/lib/validation";
+import { saveSignup } from "@/lib/waitlist";
 import { formCopy, type Lang } from "@/lib/i18n";
 
 const BEDS = ["<10", "10-29", "30-49", "50-100", "100+"];
@@ -66,25 +68,32 @@ export default function SignupForm({ lang }: { lang: Lang }) {
     inFlight.current = true;
     setStatus("submitting");
     try {
-      const res = await fetch("/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...f, language: lang, startedAt: startedAt.current }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (res.ok && data.ok) {
-        setStatus(data.status === "duplicate" ? "duplicate" : "created");
+      const parsed = signupSchema.safeParse({ ...f, language: lang, startedAt: startedAt.current || 1 });
+      if (!parsed.success) {
+        const fe = parsed.error.flatten().fieldErrors as Record<string, string[] | undefined>;
+        if (fe.website) { setStatus("created"); return; } // honeypot: bots see success
+        const map: Partial<Record<keyof Fields, string>> = {};
+        for (const k of Object.keys(fe) as (keyof Fields)[]) map[k] = t.errors.required;
+        if (fe.email) map.email = t.errors.email;
+        if (fe.phone) map.phone = t.errors.phone;
+        setErrors(map);
+        setServerError(t.errors.generic);
+        setStatus("idle");
         return;
       }
-      if (data.fields) {
-        const map: Partial<Record<keyof Fields, string>> = {};
-        for (const k of Object.keys(data.fields) as (keyof Fields)[]) map[k] = t.errors.required;
-        if (data.fields.email) map.email = t.errors.email;
-        if (data.fields.phone) map.phone = t.errors.phone;
-        setErrors(map);
+      if (Date.now() - startedAt.current < 3000) { setStatus("created"); return; } // too fast: bot
+      const d = parsed.data;
+      if (isDisposableEmail(d.email)) {
+        setErrors({ email: t.errors.email });
+        setStatus("idle");
+        return;
       }
-      setServerError(data.message || t.errors.generic);
-      setStatus("idle");
+      const result = await saveSignup({
+        full_name: d.fullName, hospital_name: d.hospitalName, role: d.role, email: d.email, phone: d.phone,
+        city: d.city, state: d.state, bed_capacity: d.bedCapacity, monthly_claims: d.monthlyClaims,
+        language: d.language, consent: true, user_agent: navigator.userAgent.slice(0, 300),
+      });
+      setStatus(result);
     } catch {
       setServerError(t.errors.generic);
       setStatus("idle");
